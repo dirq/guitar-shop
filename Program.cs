@@ -29,9 +29,32 @@ using (var db = new StoreContext())
     Console.WriteLine($"Guitars for {dirk.Name}");
     foreach (var guitar in dirk.Guitars)
     {
-        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Price:c0}");
+        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
+    }
+    
+    var strat = db.Guitars.FirstOrDefault(x => x.Id == stratId);
+    strat.Color = "Blue Crayon";
+    db.SaveChanges();
+
+    Task.Delay(1000);
+
+    strat.Color = "Red Sharpie";
+    db.SaveChanges();
+
+
+    Task.Delay(1000);
+
+    strat.Color = "Blue Splash";
+    db.SaveChanges();
+
+    Console.WriteLine("---- AFTER:");
+
+    foreach (var guitar in dirk.Guitars)
+    {
+        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
     }
 }
 
 //Pause the program
+Console.WriteLine(" - DONE - ");
 Console.ReadKey();
