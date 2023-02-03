@@ -19,8 +19,19 @@ public class StoreContext : DbContext
     {
         ApplyColumnPrecisionAndDefaultsGlobally(modelBuilder);
 
-        modelBuilder.Entity<Guitar>().ToTable("Guitars");
-        modelBuilder.Entity<Musician>().ToTable("Musicians");
+        modelBuilder.Entity<Guitar>().ToTable("Guitars", x => x.IsTemporal(options =>
+        {
+            options.HasPeriodStart("ValidFrom");
+            options.HasPeriodEnd("ValidTo");
+            options.UseHistoryTable("GuitarLogs", "History");
+        }));
+        
+        modelBuilder.Entity<Musician>().ToTable("Musicians", x => x.IsTemporal(options =>
+        {
+            options.HasPeriodStart("ValidFrom");
+            options.HasPeriodEnd("ValidTo");
+            options.UseHistoryTable("MusicianLogs", "History");
+        }));
 
         base.OnModelCreating(modelBuilder);
     }
