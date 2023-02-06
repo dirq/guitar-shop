@@ -23,37 +23,39 @@ var stratId = new Guid("85b25108-1423-4f63-ad8e-7b823d5f8344");
 //}
 
 
-using (var db = new StoreContext())
-{
-    var dirk = db.Musicians.Include(x => x.Guitars).FirstOrDefault(x => x.Id == dirksId);
-    Console.WriteLine($"Guitars for {dirk.Name}");
-    foreach (var guitar in dirk.Guitars)
-    {
-        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
-    }
+//using (var db = new StoreContext())
+//{
+//    var dirk = db.Musicians.Include(x => x.Guitars).FirstOrDefault(x => x.Id == dirksId);
+//    Console.WriteLine($"Guitars for {dirk.Name}");
+//    foreach (var guitar in dirk.Guitars)
+//    {
+//        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
+//    }
     
-    var strat = db.Guitars.FirstOrDefault(x => x.Id == stratId);
-    strat.Color = "Blue Crayon";
-    db.SaveChanges();
+//    var strat = db.Guitars.FirstOrDefault(x => x.Id == stratId);
+//    strat.Color = "Blue Crayon";
+//    db.SaveChanges();
 
-    Task.Delay(1000);
+//    Task.Delay(1000);
 
-    strat.Color = "Red Sharpie";
-    db.SaveChanges();
+//    strat.Color = "Red Sharpie";
+//    db.SaveChanges();
 
 
-    Task.Delay(1000);
+//    Task.Delay(1000);
 
-    strat.Color = "Blue Splash";
-    db.SaveChanges();
+//    strat.Color = "Blue Splash";
+//    db.SaveChanges();
 
-    Console.WriteLine("---- AFTER:");
+//    Console.WriteLine("---- AFTER:");
 
-    foreach (var guitar in dirk.Guitars)
-    {
-        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
-    }
-}
+//    foreach (var guitar in dirk.Guitars)
+//    {
+//        Console.WriteLine($" - {guitar.Make} {guitar.Model} {guitar.Color} {guitar.Price:c0}");
+//    }
+//}
+
+
 
 //Pause the program
 Console.WriteLine(" - DONE - ");

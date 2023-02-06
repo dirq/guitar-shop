@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 namespace GuitarShop;
 
@@ -17,22 +18,11 @@ public class StoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //temporal tables
+        modelBuilder.Entity<Guitar>().ToTable("Guitars", x => x.IsTemporal(o => o.UseHistoryTable("GuitarLogs", "History")));
+        modelBuilder.Entity<Musician>().ToTable("Musicians", x => x.IsTemporal(o => o.UseHistoryTable("MusicianLogs", "History")));
+
         ApplyColumnPrecisionAndDefaultsGlobally(modelBuilder);
-
-        modelBuilder.Entity<Guitar>().ToTable("Guitars", x => x.IsTemporal(options =>
-        {
-            options.HasPeriodStart("ValidFrom");
-            options.HasPeriodEnd("ValidTo");
-            options.UseHistoryTable("GuitarLogs", "History");
-        }));
-        
-        modelBuilder.Entity<Musician>().ToTable("Musicians", x => x.IsTemporal(options =>
-        {
-            options.HasPeriodStart("ValidFrom");
-            options.HasPeriodEnd("ValidTo");
-            options.UseHistoryTable("MusicianLogs", "History");
-        }));
-
         base.OnModelCreating(modelBuilder);
     }
 
@@ -62,5 +52,16 @@ public class StoreContext : DbContext
             }
         }
 
+        //temporal table settings - schema and time range fields
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entityType.IsTemporal())
+            {
+                entityType.SetHistoryTableSchema("History");
+                entityType.SetPeriodStartPropertyName("ValidFrom");
+                entityType.SetPeriodEndPropertyName("ValidTo");
+            }
+        }
     }
+
 }
